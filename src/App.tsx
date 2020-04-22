@@ -1,26 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const movies: string[] = [
+    'Boondock Saints',
+    'Good Will Hunting',
+    'Manchester by the sea',
+    'The Departed',
+    'The Town',
+    'Rounders'
+]
+
+
+interface buttonProps {
+    handleClick(): void;
+}
+const Button: React.FC<buttonProps> = ({ ...props }) => {
+    return <button style={{ width: '200px', fontSize: '18px'}} onClick={props.handleClick}>
+        What movie is Mike going to watch?
+    </button>
+}
+
+const App: React.FC = () => {
+    const [movie, setMovie] = useState('');
+
+    const getRandomMovie = (): void => { 
+        const newMovie = movies[Math.floor(Math.random() * movies.length)];
+        
+        newMovie === movie
+            ? getRandomMovie()
+            : setMovie(newMovie);
+    };
+
+    return (
+        <div className="App">
+            <header className="App-header">
+                <Button handleClick={getRandomMovie}/>
+                <p>
+                    {movie}
+                </p>
+            </header>
+        </div>
+    );
 }
 
 export default App;
